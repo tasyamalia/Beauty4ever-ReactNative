@@ -19,6 +19,8 @@ target 'Beauty4everReactNative' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
   target 'Beauty4everReactNativeTests' do
     inherit! :complete
     # Pods for testing
