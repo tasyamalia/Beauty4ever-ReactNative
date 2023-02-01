@@ -4,19 +4,21 @@ import {IconCartProduct} from '../../../assets';
 
 const BtnCartProduct = ({onPress}) => {
   return (
-    <TouchableOpacity style={styles.container()} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <IconCartProduct />
     </TouchableOpacity>
   );
 };
 export default BtnCartProduct;
 const styles = StyleSheet.create({
-  container: () => ({
+  container: {
     backgroundColor: '#FFFFFF',
-    width: 45,
-    height: 45,
+    width: 35,
+    height: 35,
     borderRadius: 99,
     borderColor: '#FF6182',
     borderWidth: 1,
-  }),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

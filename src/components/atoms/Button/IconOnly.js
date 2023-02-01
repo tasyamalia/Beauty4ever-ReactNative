@@ -2,7 +2,7 @@ import React from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
   IconBack,
-  IconCartProduct,
+  IconCartMenu,
   IconLikeActive,
   IconLikeInactive,
   IconLikeMenu,
@@ -23,7 +23,7 @@ const IconOnly = ({onPress, icon}) => {
       return <IconLikeMenu />;
     }
     if (icon === 'icon-cart-menu') {
-      return <IconCartProduct />;
+      return <IconCartMenu />;
     }
     return <IconBack />;
   };

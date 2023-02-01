@@ -4,8 +4,12 @@ import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
 import Header from '../../components/molecules/Header';
 import Carousel from 'react-native-reanimated-carousel';
 import {ILLBanner1, ILLBanner2, ILLBanner3} from '../../assets';
+import {getDataMakeup} from '../../fakebackend/axiosData';
+import Product from '../../components/molecules/Product';
+import {Gap} from '../../components/atoms';
 
 const Home = ({navigation}) => {
+  const [data, setData] = useState([]);
   const widthWindow = Dimensions.get('window').width;
   const Banner = index => {
     if (index.index === 0) {
@@ -19,6 +23,14 @@ const Home = ({navigation}) => {
     }
     return <Image source={ILLBanner1} style={styles.banner_image} />;
   };
+  const handleGetData = async () => {
+    const response = await getDataMakeup();
+    setData(response);
+  };
+
+  useEffect(() => {
+    handleGetData();
+  }, []);
   return (
     <View style={styles.page}>
       <Header title="Home" type="main-view" />
@@ -36,7 +48,10 @@ const Home = ({navigation}) => {
             </View>
           )}
         />
-        <Text style={styles.selectionLabel}>Home</Text>
+        <Gap height={20} />
+        <View style={styles.product}>
+          <Product dataProduct={data} />
+        </View>
       </View>
     </View>
   );
@@ -46,6 +61,7 @@ export default Home;
 const styles = StyleSheet.create({
   page: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
   },
   content: {
     flex: 1,
@@ -81,5 +97,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
+  },
+  product: {
+    marginHorizontal: 15,
+    marginBottom: 140,
   },
 });

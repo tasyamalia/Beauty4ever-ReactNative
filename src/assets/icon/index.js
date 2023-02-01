@@ -1,5 +1,6 @@
 import IconHomeActive from './ic_home_active.svg';
 import IconHomeInactive from './ic_home_inactive.svg';
+import IconCartMenu from './ic_cart_menu.svg';
 import IconCartProduct from './ic_cart_product.svg';
 import IconBack from './ic_chevron_left.svg';
 import IconLikeActive from './ic_like_active.svg';
@@ -13,6 +14,7 @@ import IconMyProfileInactive from './ic_my_profile_inactive.svg';
 export {
   IconHomeActive,
   IconHomeInactive,
+  IconCartMenu,
   IconCartProduct,
   IconBack,
   IconLikeActive,
