@@ -23,21 +23,19 @@ const Home = ({navigation}) => {
     <View style={styles.page}>
       <Header title="Home" type="main-view" />
       <View style={styles.content}>
-        <View style={styles.container}>
-          <Carousel
-            loop
-            width={widthWindow}
-            height={widthWindow / 3.3}
-            autoPlay={true}
-            data={['1', '2', '3']}
-            scrollAnimationDuration={4000}
-            renderItem={({index}) => (
-              <View>
-                <Banner index={index} />
-              </View>
-            )}
-          />
-        </View>
+        <Carousel
+          loop
+          width={widthWindow}
+          height={widthWindow / 3.3}
+          autoPlay={true}
+          data={['1', '2', '3']}
+          scrollAnimationDuration={4000}
+          renderItem={({index}) => (
+            <View>
+              <Banner index={index} />
+            </View>
+          )}
+        />
         <Text style={styles.selectionLabel}>Home</Text>
       </View>
     </View>
