@@ -2,17 +2,21 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Header from '../../components/molecules/Header';
 
-const MyProfile = ({navigation}) => {
+const Liked = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header title="My Profile" />
+      <Header
+        title="Like"
+        type="icon-back"
+        onPressBack={() => navigation.goBack()}
+      />
       <View style={styles.content}>
-        <Text style={styles.selectionLabel}>My Profile</Text>
+        <Text style={styles.selectionLabel}>Like</Text>
       </View>
     </View>
   );
 };
-export default MyProfile;
+export default Liked;
 
 const styles = StyleSheet.create({
   page: {

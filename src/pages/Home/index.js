@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  Image,
+  FlatList,
+} from 'react-native';
 import Header from '../../components/molecules/Header';
 import Carousel from 'react-native-reanimated-carousel';
 import {ILLBanner1, ILLBanner2, ILLBanner3} from '../../assets';
@@ -33,7 +40,12 @@ const Home = ({navigation}) => {
   }, []);
   return (
     <View style={styles.page}>
-      <Header title="Home" type="main-view" />
+      <Header
+        title="Home"
+        type="home"
+        onPressLike={() => navigation.navigate('Liked')}
+        onPressCart={() => navigation.navigate('Cart')}
+      />
       <View style={styles.content}>
         <Carousel
           loop
@@ -50,7 +62,22 @@ const Home = ({navigation}) => {
         />
         <Gap height={20} />
         <View style={styles.product}>
-          <Product dataProduct={data} />
+          <FlatList
+            data={data}
+            renderItem={({item}) => (
+              <Product
+                item={item}
+                onPress={() => {
+                  navigation.navigate('DetailProduct', {
+                    image_link: item.image_link,
+                    name: item.name,
+                  });
+                }}
+              />
+            )}
+            numColumns={2}
+            keyExtractor={(item, index) => index.toString()}
+          />
         </View>
       </View>
     </View>

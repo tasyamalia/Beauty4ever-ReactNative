@@ -5,7 +5,7 @@ import Header from '../../components/molecules/Header';
 const MyOrder = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header title="My Order" type="main-view" />
+      <Header title="My Order" />
       <View style={styles.content}>
         <Text style={styles.selectionLabel}>My Order</Text>
       </View>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Home, MyOrder, MyProfile} from '../pages';
+import {Cart, DetailProduct, Home, Liked, MyOrder, MyProfile} from '../pages';
 import {BottomNavigator} from '../components';
 
 const Stack = createStackNavigator();
@@ -31,6 +31,21 @@ const Router = () => {
       <Stack.Screen
         name="MainApp"
         component={MainApp}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Liked"
+        component={Liked}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Cart"
+        component={Cart}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DetailProduct"
+        component={DetailProduct}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

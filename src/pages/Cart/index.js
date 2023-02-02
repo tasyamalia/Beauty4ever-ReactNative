@@ -2,25 +2,27 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import Header from '../../components/molecules/Header';
 
-const MyProfile = ({navigation}) => {
+const Cart = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header title="My Profile" />
+      <Header
+        title="Cart"
+        type="icon-back"
+        onPressBack={() => navigation.goBack()}
+      />
       <View style={styles.content}>
-        <Text style={styles.selectionLabel}>My Profile</Text>
+        <Text style={styles.selectionLabel}>Cart</Text>
       </View>
     </View>
   );
 };
-export default MyProfile;
+export default Cart;
 
 const styles = StyleSheet.create({
   page: {
-    // backgroundColor: colors.secondary,
     flex: 1,
   },
   content: {
-    // backgroundColor: colors.white,
     flex: 1,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
