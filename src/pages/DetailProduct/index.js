@@ -14,6 +14,7 @@ const DetailProduct = ({route, navigation}) => {
   const [userUid, setUserUid] = useState();
   const [dataCart, setDataCart] = useState([]);
   const handleLikeV2 = async => {
+    getDataLikeV2();
     console.log('KLIK LIKE: ');
     var dataLikeByOd = '';
     dataLike.map(i => {
@@ -37,7 +38,6 @@ const DetailProduct = ({route, navigation}) => {
   };
 
   const getDataLikeV2 = async () => {
-    getDataLikeV2();
     setUserUid(await getData('user_uid'));
     const dbRef = ref(RealDatabase);
     get(child(dbRef, `liked/${userUid}/list`))
