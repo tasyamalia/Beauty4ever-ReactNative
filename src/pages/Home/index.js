@@ -42,6 +42,7 @@ const Home = ({navigation}) => {
     setData(response);
   };
   const handleAddCart = async id => {
+    getDataCart();
     console.log('KLIK CART: ');
     var dataCartById = '';
     var dataCartByIdQty = '';
@@ -92,7 +93,6 @@ const Home = ({navigation}) => {
   };
   useEffect(() => {
     handleGetData();
-    getDataCart();
   });
   return (
     <View style={styles.page}>

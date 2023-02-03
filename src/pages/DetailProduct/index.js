@@ -37,6 +37,7 @@ const DetailProduct = ({route, navigation}) => {
   };
 
   const getDataLikeV2 = async () => {
+    getDataLikeV2();
     setUserUid(await getData('user_uid'));
     const dbRef = ref(RealDatabase);
     get(child(dbRef, `liked/${userUid}/list`))
@@ -84,6 +85,7 @@ const DetailProduct = ({route, navigation}) => {
       });
   };
   const handleAddCart = async => {
+    getDataCart();
     console.log('KLIK CART: ');
     var dataCartById = '';
     var dataCartByIdQty = '';
@@ -109,10 +111,6 @@ const DetailProduct = ({route, navigation}) => {
       setDataCart(dataCart);
     }
   };
-  useEffect(() => {
-    getDataLikeV2();
-    getDataCart();
-  });
   return (
     <View style={styles.page}>
       <Header
