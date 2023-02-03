@@ -71,6 +71,9 @@ const Home = ({navigation}) => {
                   navigation.navigate('DetailProduct', {
                     image_link: item.image_link,
                     name: item.name,
+                    description: item.description,
+                    price: item.price,
+                    product_colors: item.product_colors,
                   });
                 }}
               />
