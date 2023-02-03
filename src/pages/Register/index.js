@@ -35,6 +35,7 @@ const Register = ({navigation}) => {
           uid: success.user.uid,
         };
         storeData('user', data);
+        storeData('user_uid', success.user.uid);
         // await setDoc(doc(Database, 'users', success.user.uid), {
         //   datauser: {
         //     fullName: form.fullName,

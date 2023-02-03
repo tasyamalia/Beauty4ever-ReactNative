@@ -24,6 +24,7 @@
 import {initializeApp} from 'firebase/app';
 import {getAuth} from 'firebase/auth';
 import {getFirestore} from 'firebase/firestore';
+import {getDatabase} from 'firebase/database';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBWwniUWPN1BgoT0vt1ehj2XXvy7Xx1IPA',
@@ -33,11 +34,13 @@ const firebaseConfig = {
   messagingSenderId: '365946164322',
   appId: '1:365946164322:web:af3308ddb5fdada25d2d3b',
   measurementId: 'G-S65TW60XXE',
+  databaseURL: 'beauty4ever-75bb9-default-rtdb.asia-southeast1.firebasedatabase.app',
 };
 const Fire = initializeApp(firebaseConfig);
 const Auth = getAuth(Fire);
 const Database = getFirestore(Fire, {
+  experimentalAutoDetectLongPolling: true,
   experimentalForceLongPolling: true,
-  useFetchStreams: false,
 });
-export {Fire, Auth, Database};
+const RealDatabase = getDatabase(Fire);
+export {Fire, Auth, Database, RealDatabase};

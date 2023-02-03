@@ -14,9 +14,13 @@ import {ILLBanner1, ILLBanner2, ILLBanner3} from '../../assets';
 import {getDataMakeup} from '../../fakebackend/axiosData';
 import Product from '../../components/molecules/Product';
 import {Gap} from '../../components/atoms';
+import {RealDatabase} from '../../config/Fire';
+import {getData} from '../../utils';
+import {child, get, ref, remove, set} from 'firebase/database';
 
 const Home = ({navigation}) => {
   const [data, setData] = useState([]);
+  const [dataLike, setDataLikes] = useState([]);
   const widthWindow = Dimensions.get('window').width;
   const Banner = index => {
     if (index.index === 0) {
@@ -34,8 +38,48 @@ const Home = ({navigation}) => {
     const response = await getDataMakeup();
     setData(response);
   };
-
+  const handleLikeV2 = async id => {
+    const user_uid = await getData('user_uid');
+    var dataLikeByOd = '';
+    dataLike.map(i => {
+      if (id === i.id) {
+        dataLikeByOd = id;
+      }
+    });
+    if (dataLikeByOd === '') {
+      set(ref(RealDatabase, `liked/${user_uid}/list/${id}`), {
+        id: id,
+      });
+    } else {
+      const dbRef = ref(RealDatabase, `liked/${user_uid}/list/${id}`);
+      remove(dbRef);
+    }
+  };
+  const getDataLikeV2 = async () => {
+    const user_uid = await getData('user_uid');
+    const dbRef = ref(RealDatabase);
+    get(child(dbRef, `liked/${user_uid}/list`))
+      .then(async snapshot => {
+        if (snapshot.exists()) {
+          const oldData = snapshot.val();
+          const datas = [];
+          Object.keys(oldData).map(key => {
+            datas.push({
+              id: oldData[key].id,
+            });
+          });
+          console.log('dataHasilParse: ', datas);
+          setDataLikes(datas);
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
   useEffect(() => {
+    getDataLikeV2();
     handleGetData();
   }, []);
   return (
@@ -76,6 +120,7 @@ const Home = ({navigation}) => {
                     product_colors: item.product_colors,
                   });
                 }}
+                onPressLike={() => handleLikeV2(item.id)}
               />
             )}
             numColumns={2}

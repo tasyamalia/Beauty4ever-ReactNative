@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Input, Button, Link, Gap} from '../../components';
-import {useForm} from '../../utils';
+import {storeData, useForm} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
 import {signInWithEmailAndPassword} from 'firebase/auth';
@@ -19,6 +19,7 @@ const Login = ({navigation}) => {
       .then(res => {
         console.log('success: ', res);
         dispatch({type: 'SET_LOADING', value: false});
+        storeData('user_uid', res.user.uid);
         navigation.replace('MainApp');
       })
       .catch(err => {

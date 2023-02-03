@@ -3,16 +3,18 @@ import {StyleSheet, Text, View, Image} from 'react-native';
 import {ILLogo} from '../../assets';
 import {onAuthStateChanged} from 'firebase/auth';
 import {Auth} from '../../config/Fire';
+import {storeData} from '../../utils/localstorage';
 
 const Splash = ({navigation}) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(Auth, user => {
-      setTimeout(() => {
+      setTimeout(async () => {
         if (user) {
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
           const uid = user.uid;
-          console.log('user: ', user);
+          storeData('user_uid', uid);
+          //  console.log('user: ', uid);
           navigation.replace('MainApp');
         } else {
           // User is signed out
