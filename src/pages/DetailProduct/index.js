@@ -14,7 +14,6 @@ const DetailProduct = ({route, navigation}) => {
   const [userUid, setUserUid] = useState();
   const [dataCart, setDataCart] = useState([]);
   const handleLikeV2 = async => {
-    getDataLikeV2();
     console.log('KLIK LIKE: ');
     var dataLikeByOd = '';
     dataLike.map(i => {
@@ -52,6 +51,9 @@ const DetailProduct = ({route, navigation}) => {
           });
           await Promise.all(promises);
           setDataLikes(datas);
+          const dtLike = dataLike.findIndex(it => it.id === id);
+          const lk = dtLike >= 0 ? true : false;
+          setLike(lk);
         } else {
           console.log('No data available inii');
         }
@@ -111,6 +113,9 @@ const DetailProduct = ({route, navigation}) => {
       setDataCart(dataCart);
     }
   };
+  useEffect(() => {
+    getDataLikeV2();
+  });
   return (
     <View style={styles.page}>
       <Header
