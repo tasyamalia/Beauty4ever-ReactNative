@@ -20,9 +20,10 @@ import {child, get, ref, remove, set} from 'firebase/database';
 
 const Home = ({navigation}) => {
   const [data, setData] = useState([]);
-  const [dataLike, setDataLikes] = useState([]);
+  const [userUid, setUserUid] = useState();
   const [dataCart, setDataCart] = useState([]);
   const widthWindow = Dimensions.get('window').width;
+
   const Banner = index => {
     if (index.index === 0) {
       return <Image source={ILLBanner1} style={styles.banner_image} />;
@@ -36,51 +37,12 @@ const Home = ({navigation}) => {
     return <Image source={ILLBanner1} style={styles.banner_image} />;
   };
   const handleGetData = async () => {
+    setUserUid(await getData('user_uid'));
     const response = await getDataMakeup();
     setData(response);
   };
-  const handleLikeV2 = async id => {
-    const user_uid = await getData('user_uid');
-    var dataLikeByOd = '';
-    dataLike.map(i => {
-      if (id === i.id) {
-        dataLikeByOd = id;
-      }
-    });
-    if (dataLikeByOd === '') {
-      set(ref(RealDatabase, `liked/${user_uid}/list/${id}`), {
-        id: id,
-      });
-    } else {
-      const dbRef = ref(RealDatabase, `liked/${user_uid}/list/${id}`);
-      remove(dbRef);
-    }
-  };
-  const getDataLikeV2 = async () => {
-    const user_uid = await getData('user_uid');
-    const dbRef = ref(RealDatabase);
-    get(child(dbRef, `liked/${user_uid}/list`))
-      .then(async snapshot => {
-        if (snapshot.exists()) {
-          const oldData = snapshot.val();
-          const datas = [];
-          Object.keys(oldData).map(key => {
-            datas.push({
-              id: oldData[key].id,
-            });
-          });
-          console.log('dataHasilParse: ', datas);
-          setDataLikes(datas);
-        } else {
-          console.log('No data available');
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  };
   const handleAddCart = async id => {
-    const user_uid = await getData('user_uid');
+    console.log('KLIK CART: ');
     var dataCartById = '';
     var dataCartByIdQty = '';
     dataCart.map(i => {
@@ -90,34 +52,35 @@ const Home = ({navigation}) => {
       }
     });
     if (dataCartById === '') {
-      set(ref(RealDatabase, `cart/${user_uid}/list/${id}`), {
+      set(ref(RealDatabase, `cart/${userUid}/list/${id}`), {
         id: id,
         qty: 1,
       });
+      dataCart.push({id: id, qty: 1});
+      setDataCart(dataCart);
     } else {
-      set(ref(RealDatabase, `cart/${user_uid}/list/${id}`), {
+      set(ref(RealDatabase, `cart/${userUid}/list/${id}`), {
         id: id,
         qty: dataCartByIdQty + 1,
       });
+      dataCart.push({id: id, qty: dataCartByIdQty + 1});
+      setDataCart(dataCart);
     }
-    //refreshDataCart
-    getDataCart();
   };
   const getDataCart = async () => {
-    const user_uid = await getData('user_uid');
     const dbRef = ref(RealDatabase);
-    get(child(dbRef, `cart/${user_uid}/list`))
+    get(child(dbRef, `cart/${userUid}/list`))
       .then(async snapshot => {
         if (snapshot.exists()) {
           const oldData = snapshot.val();
           const datas = [];
-          Object.keys(oldData).map(key => {
+          const promises = await Object.keys(oldData).map(key => {
             datas.push({
               id: oldData[key].id,
               qty: oldData[key].qty,
             });
           });
-          console.log('dataHasilParse: ', datas);
+          await Promise.all(promises);
           setDataCart(datas);
         } else {
           console.log('No data available');
@@ -128,10 +91,9 @@ const Home = ({navigation}) => {
       });
   };
   useEffect(() => {
-    getDataLikeV2();
-    getDataCart();
     handleGetData();
-  }, []);
+    getDataCart();
+  });
   return (
     <View style={styles.page}>
       <Header
@@ -168,9 +130,9 @@ const Home = ({navigation}) => {
                     description: item.description,
                     price: item.price,
                     product_colors: item.product_colors,
+                    id: item.id,
                   });
                 }}
-                onPressLike={() => handleLikeV2(item.id)}
                 onPressCart={() => handleAddCart(item.id)}
               />
             )}

@@ -1,9 +1,118 @@
+import {child, get, ref, remove, set} from 'firebase/database';
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
+import {Button, Gap} from '../../components/atoms';
 import Header from '../../components/molecules/Header';
+import {RealDatabase} from '../../config/Fire';
+import {getData} from '../../utils';
 
 const DetailProduct = ({route, navigation}) => {
-  const {image_link, name, description, price, product_colors} = route.params;
+  const {image_link, name, description, price, product_colors, id} =
+    route.params;
+  const [dataLike, setDataLikes] = useState([]);
+  const [isLike, setLike] = useState();
+  const [userUid, setUserUid] = useState();
+  const [dataCart, setDataCart] = useState([]);
+  const handleLikeV2 = async => {
+    console.log('KLIK LIKE: ');
+    var dataLikeByOd = '';
+    dataLike.map(i => {
+      if (id === i.id) {
+        dataLikeByOd = id;
+      }
+    });
+    if (dataLikeByOd === '') {
+      set(ref(RealDatabase, `liked/${userUid}/list/${id}`), {
+        id: id,
+      });
+      dataLike.push({id: id});
+      setDataLikes(dataLike);
+      setLike(true);
+    } else {
+      const dbRef = ref(RealDatabase, `liked/${userUid}/list/${id}`);
+      remove(dbRef);
+      setDataLikes(dataLike.filter(a => a.id !== id));
+      setLike(false);
+    }
+  };
+
+  const getDataLikeV2 = async () => {
+    setUserUid(await getData('user_uid'));
+    const dbRef = ref(RealDatabase);
+    get(child(dbRef, `liked/${userUid}/list`))
+      .then(async snapshot => {
+        if (snapshot.exists()) {
+          const oldData = snapshot.val();
+          const datas = [];
+          const promises = await Object.keys(oldData).map(key => {
+            datas.push({
+              id: oldData[key].id,
+            });
+          });
+          await Promise.all(promises);
+          setDataLikes(datas);
+        } else {
+          console.log('No data available inii');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+  const getDataCart = async () => {
+    const dbRef = ref(RealDatabase);
+    get(child(dbRef, `cart/${userUid}/list`))
+      .then(async snapshot => {
+        if (snapshot.exists()) {
+          const oldData = snapshot.val();
+          const datas = [];
+          const promises = await Object.keys(oldData).map(key => {
+            datas.push({
+              id: oldData[key].id,
+              qty: oldData[key].qty,
+            });
+          });
+          await Promise.all(promises);
+          // console.log('dataHasilParse: ', datas);
+          setDataCart(datas);
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+  const handleAddCart = async => {
+    console.log('KLIK CART: ');
+    var dataCartById = '';
+    var dataCartByIdQty = '';
+    dataCart.map(i => {
+      if (id === i.id) {
+        dataCartById = i.id;
+        dataCartByIdQty = i.qty;
+      }
+    });
+    if (dataCartById === '') {
+      set(ref(RealDatabase, `cart/${userUid}/list/${id}`), {
+        id: id,
+        qty: 1,
+      });
+      dataCart.push({id: id, qty: 1});
+      setDataCart(dataCart);
+    } else {
+      set(ref(RealDatabase, `cart/${userUid}/list/${id}`), {
+        id: id,
+        qty: dataCartByIdQty + 1,
+      });
+      dataCart.push({id: id, qty: dataCartByIdQty + 1});
+      setDataCart(dataCart);
+    }
+  };
+  useEffect(() => {
+    getDataLikeV2();
+    getDataCart();
+  });
   return (
     <View style={styles.page}>
       <Header
@@ -13,6 +122,13 @@ const DetailProduct = ({route, navigation}) => {
       />
       <View style={styles.content}>
         <View style={styles.container}>
+          <View style={styles.btnLike}>
+            <Button
+              type={'icon-only'}
+              icon={isLike === true ? 'icon-like-active' : 'icon-like-inactive'}
+              onPress={handleLikeV2}
+            />
+          </View>
           <Image
             style={styles.imageThumbnail}
             source={{uri: image_link}}
@@ -29,6 +145,10 @@ const DetailProduct = ({route, navigation}) => {
               {item.colour_name}
             </Text>
           ))}
+          <Gap height={20} />
+          <View style={styles.btnCart}>
+            <Button title="Add to Cart" onPress={handleAddCart} />
+          </View>
         </View>
       </View>
     </View>
@@ -116,11 +236,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: 'bold',
   },
-  btnCart: {
-    alignSelf: 'flex-end',
-  },
   btnLike: {
     alignItems: 'flex-end',
-    marginTop: 5,
+    marginTop: 20,
+    marginRight: 20,
+  },
+  btnCart: {
+    marginHorizontal: 40,
   },
 });

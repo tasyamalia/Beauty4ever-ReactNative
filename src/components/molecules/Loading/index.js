@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     position: 'absolute',
-    backgroundColor: '#FF6182',
+    backgroundColor: '#E2E2E2',
+    opacity: 0.25,
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    color: '#FF6182',
+    color: '#000000',
     marginTop: 16,
   },
 });

@@ -48,7 +48,7 @@ const MyProfile = ({navigation}) => {
         <Input label="Phone Number" value={dataUser.phoneNumber} disable />
         <Gap height={20} />
         <Input label="Address" value={dataUser.address} disable />
-        <Gap height={40} />
+        <Gap height={20} />
         <View style={styles.btnLogout}>
           <Button title="Logout" onPress={logout} />
         </View>

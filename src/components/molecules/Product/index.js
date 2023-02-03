@@ -6,13 +6,7 @@ import {Gap, Button} from '../../atoms';
 const Product = ({item, isLiked, onPress, onPressCart, onPressLike}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.btnLike}>
-        <Button
-          type={'icon-only'}
-          icon={isLiked === true ? 'icon-like-active' : 'icon-like-inactive'}
-          onPress={onPressLike}
-        />
-      </View>
+      <Gap height={5} />
       <TouchableOpacity onPress={onPress}>
         <Image
           style={styles.imageThumbnail}
