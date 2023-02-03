@@ -1,7 +1,17 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Cart, DetailProduct, Home, Liked, MyOrder, MyProfile} from '../pages';
+import {
+  Cart,
+  DetailProduct,
+  Home,
+  Liked,
+  Login,
+  MyOrder,
+  MyProfile,
+  Register,
+  Splash,
+} from '../pages';
 import {BottomNavigator} from '../components';
 
 const Stack = createStackNavigator();
@@ -27,7 +37,7 @@ const MainApp = () => {
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="MainApp">
+    <Stack.Navigator initialRouteName="Splash">
       <Stack.Screen
         name="MainApp"
         component={MainApp}
@@ -46,6 +56,21 @@ const Router = () => {
       <Stack.Screen
         name="DetailProduct"
         component={DetailProduct}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Splash"
+        component={Splash}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

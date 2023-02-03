@@ -3,13 +3,14 @@ import {StyleSheet, Image, View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Gap, Button} from '../../atoms';
 
-const Product = ({item, isLiked, onPress}) => {
+const Product = ({item, isLiked, onPress, onPressCart, onPressLike}) => {
   return (
     <View style={styles.container}>
       <View style={styles.btnLike}>
         <Button
           type={'icon-only'}
           icon={isLiked === true ? 'icon-like-active' : 'icon-like-inactive'}
+          onPress={onPressLike}
         />
       </View>
       <TouchableOpacity onPress={onPress}>
@@ -25,7 +26,11 @@ const Product = ({item, isLiked, onPress}) => {
         <Text style={styles.price}>
           Rp. {(Number(item.price) * 15000).toLocaleString()}
         </Text>
-        <Button type={'btn-cart_product'} style={styles.btnCart} />
+        <Button
+          type={'btn-cart_product'}
+          style={styles.btnCart}
+          onPress={onPressLike}
+        />
       </View>
     </View>
   );
