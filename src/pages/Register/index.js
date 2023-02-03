@@ -6,17 +6,18 @@ import {useDispatch} from 'react-redux';
 import {useForm} from '../../utils';
 import {storeData, getData} from '../../utils';
 import {createUserWithEmailAndPassword} from 'firebase/auth';
-import {Auth, Database} from '../../config/Fire';
+import {Auth, Database, RealDatabase} from '../../config/Fire';
 import {doc, setDoc} from 'firebase/firestore';
-import { ILLogo } from '../../assets';
+import {ILLogo} from '../../assets';
+import {ref, set} from 'firebase/database';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
-    // fullName: '',
+    fullName: '',
     email: '',
     password: '',
-    // phoneNumber: '',
-    // address: '',
+    phoneNumber: '',
+    address: '',
   });
   const dispatch = useDispatch();
 
@@ -28,23 +29,21 @@ const Register = ({navigation}) => {
         dispatch({type: 'SET_LOADING', value: false});
         navigation.replace('MainApp');
         const data = {
-          // fullName: form.fullName,
+          fullName: form.fullName,
           email: form.email,
-          // phoneNumber: form.phoneNumber,
-          // address: form.address,
+          phoneNumber: form.phoneNumber,
+          address: form.address,
           uid: success.user.uid,
         };
         storeData('user', data);
         storeData('user_uid', success.user.uid);
-        // await setDoc(doc(Database, 'users', success.user.uid), {
-        //   datauser: {
-        //     fullName: form.fullName,
-        //     email: form.email,
-        //     phoneNumber: form.phoneNumber,
-        //     address: form.address,
-        //     uid: success.user.uid,
-        //   },
-        // });
+        set(ref(RealDatabase, `users/${success.user.uid}/`), {
+          fullName: form.fullName,
+          email: form.email,
+          phoneNumber: form.phoneNumber,
+          address: form.address,
+          uid: success.user.uid,
+        });
       })
       .catch(error => {
         const errorMessage = error.message;
@@ -63,12 +62,12 @@ const Register = ({navigation}) => {
             </View>
             <Gap height={10} />
             <Text style={styles.title}>Register Account</Text>
-            {/* <Gap height={20} />
+            <Gap height={20} />
             <Input
               label="Full Name"
               value={form.fullName}
               onChangeText={value => setForm('fullName', value)}
-            /> */}
+            />
             <Gap height={24} />
             <Input
               label="Email "
@@ -82,7 +81,7 @@ const Register = ({navigation}) => {
               onChangeText={value => setForm('password', value)}
               secureTextEntry
             />
-            {/* <Gap height={24} />
+            <Gap height={24} />
             <Input
               label="Phone Number"
               value={form.phoneNumber}
@@ -93,7 +92,7 @@ const Register = ({navigation}) => {
               label="Address"
               value={form.address}
               onChangeText={value => setForm('address', value)}
-            /> */}
+            />
             <Gap height={40} />
             <Button title="Register" onPress={onContinue} />
           </ScrollView>

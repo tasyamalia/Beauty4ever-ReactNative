@@ -21,6 +21,7 @@ export default Cart;
 const styles = StyleSheet.create({
   page: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
   },
   content: {
     flex: 1,

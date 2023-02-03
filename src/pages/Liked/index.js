@@ -20,11 +20,10 @@ export default Liked;
 
 const styles = StyleSheet.create({
   page: {
-    // backgroundColor: colors.secondary,
+    backgroundColor: '#FFFFFF',
     flex: 1,
   },
   content: {
-    // backgroundColor: colors.white,
     flex: 1,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,

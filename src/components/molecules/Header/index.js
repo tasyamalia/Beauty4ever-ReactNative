@@ -5,10 +5,15 @@ import {Gap, Button} from '../../atoms';
 const Header = ({onPressBack, onPressLike, onPressCart, title, type}) => {
   if (type === 'icon-back') {
     return (
-      <View style={styles.container}>
-        <Button type="icon-only" icon="icon-back" onPress={onPressBack} />
-        <Gap width={24} />
-        <Text style={styles.text}>{title}</Text>
+      <View>
+        <View style={styles.container}>
+          <Button type="icon-only" icon="icon-back" onPress={onPressBack} />
+          <Gap width={24} />
+          <Text style={styles.text}>{title}</Text>
+        </View>
+        <View style={styles.gapView}>
+          <Gap height={1} />
+        </View>
       </View>
     );
   }
@@ -23,8 +28,13 @@ const Header = ({onPressBack, onPressLike, onPressCart, title, type}) => {
     );
   }
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>{title}</Text>
+    <View>
+      <View style={styles.container}>
+        <Text style={styles.text}>{title}</Text>
+      </View>
+      <View style={styles.gapView}>
+        <Gap height={3} />
+      </View>
     </View>
   );
 };
@@ -43,5 +53,8 @@ const styles = StyleSheet.create({
     color: '#FF6182',
     flex: 1,
     textTransform: 'capitalize',
+  },
+  gapView: {
+    backgroundColor: '#F8F8F8',
   },
 });

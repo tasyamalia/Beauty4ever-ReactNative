@@ -20,6 +20,7 @@ const Login = ({navigation}) => {
         console.log('success: ', res);
         dispatch({type: 'SET_LOADING', value: false});
         storeData('user_uid', res.user.uid);
+        storeData('user', res.user);
         navigation.replace('MainApp');
       })
       .catch(err => {

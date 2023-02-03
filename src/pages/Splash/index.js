@@ -14,6 +14,7 @@ const Splash = ({navigation}) => {
           // https://firebase.google.com/docs/reference/js/firebase.User
           const uid = user.uid;
           storeData('user_uid', uid);
+          storeData('user', user);
           //  console.log('user: ', uid);
           navigation.replace('MainApp');
         } else {
