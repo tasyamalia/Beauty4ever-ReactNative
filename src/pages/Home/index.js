@@ -21,6 +21,7 @@ import {child, get, ref, remove, set} from 'firebase/database';
 const Home = ({navigation}) => {
   const [data, setData] = useState([]);
   const [dataLike, setDataLikes] = useState([]);
+  const [dataCart, setDataCart] = useState([]);
   const widthWindow = Dimensions.get('window').width;
   const Banner = index => {
     if (index.index === 0) {
@@ -78,8 +79,57 @@ const Home = ({navigation}) => {
         console.error(error);
       });
   };
+  const handleAddCart = async id => {
+    const user_uid = await getData('user_uid');
+    var dataCartById = '';
+    var dataCartByIdQty = '';
+    dataCart.map(i => {
+      if (id === i.id) {
+        dataCartById = i.id;
+        dataCartByIdQty = i.qty;
+      }
+    });
+    if (dataCartById === '') {
+      set(ref(RealDatabase, `cart/${user_uid}/list/${id}`), {
+        id: id,
+        qty: 1,
+      });
+    } else {
+      set(ref(RealDatabase, `cart/${user_uid}/list/${id}`), {
+        id: id,
+        qty: dataCartByIdQty + 1,
+      });
+    }
+    //refreshDataCart
+    getDataCart();
+  };
+  const getDataCart = async () => {
+    const user_uid = await getData('user_uid');
+    const dbRef = ref(RealDatabase);
+    get(child(dbRef, `cart/${user_uid}/list`))
+      .then(async snapshot => {
+        if (snapshot.exists()) {
+          const oldData = snapshot.val();
+          const datas = [];
+          Object.keys(oldData).map(key => {
+            datas.push({
+              id: oldData[key].id,
+              qty: oldData[key].qty,
+            });
+          });
+          console.log('dataHasilParse: ', datas);
+          setDataCart(datas);
+        } else {
+          console.log('No data available');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
   useEffect(() => {
     getDataLikeV2();
+    getDataCart();
     handleGetData();
   }, []);
   return (
@@ -121,6 +171,7 @@ const Home = ({navigation}) => {
                   });
                 }}
                 onPressLike={() => handleLikeV2(item.id)}
+                onPressCart={() => handleAddCart(item.id)}
               />
             )}
             numColumns={2}

@@ -29,7 +29,7 @@ const Product = ({item, isLiked, onPress, onPressCart, onPressLike}) => {
         <Button
           type={'btn-cart_product'}
           style={styles.btnCart}
-          onPress={onPressLike}
+          onPress={onPressCart}
         />
       </View>
     </View>
