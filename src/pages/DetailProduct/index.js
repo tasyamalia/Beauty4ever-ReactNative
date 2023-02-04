@@ -4,14 +4,12 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import {Button, Gap} from '../../components/atoms';
 import Header from '../../components/molecules/Header';
 import {RealDatabase} from '../../config/Fire';
-import {getData} from '../../utils';
 
 const DetailProduct = ({route, navigation}) => {
-  const {image_link, name, description, price, product_colors, id} =
+  const {image_link, name, description, price, product_colors, id, userUid} =
     route.params;
   const [dataLike, setDataLikes] = useState([]);
   const [isLike, setLike] = useState();
-  const [userUid, setUserUid] = useState();
   const [dataCart, setDataCart] = useState([]);
   const handleLikeV2 = async => {
     console.log('KLIK LIKE: ');
@@ -37,7 +35,6 @@ const DetailProduct = ({route, navigation}) => {
   };
 
   const getDataLikeV2 = async () => {
-    setUserUid(await getData('user_uid'));
     const dbRef = ref(RealDatabase);
     get(child(dbRef, `liked/${userUid}/list`))
       .then(async snapshot => {

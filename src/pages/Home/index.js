@@ -99,8 +99,8 @@ const Home = ({navigation}) => {
       <Header
         title="Home"
         type="home"
-        onPressLike={() => navigation.navigate('Liked')}
-        onPressCart={() => navigation.navigate('Cart')}
+        onPressLike={() => navigation.navigate('Liked', {userUid: userUid})}
+        onPressCart={() => navigation.navigate('Cart', {userUid: userUid})}
       />
       <View style={styles.content}>
         <Carousel
@@ -131,6 +131,7 @@ const Home = ({navigation}) => {
                     price: item.price,
                     product_colors: item.product_colors,
                     id: item.id,
+                    userUid: userUid,
                   });
                 }}
                 onPressCart={() => handleAddCart(item.id)}

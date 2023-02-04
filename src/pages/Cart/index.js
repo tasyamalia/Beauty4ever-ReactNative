@@ -4,19 +4,24 @@ import Header from '../../components/molecules/Header';
 import {child, get, ref} from 'firebase/database';
 import {RealDatabase} from '../../config/Fire';
 import {getDataMakeup} from '../../fakebackend/axiosData';
+import {getData} from '../../utils';
+import { Gap } from '../../components/atoms';
 
-const Cart = ({navigation}) => {
+const Cart = ({route, navigation}) => {
+  const {userUid} = route.params;
+  // const [userUid, setUserUid] = useState();
   const [data, setData] = useState([]);
   const [dataCart, setDataCart] = useState([]);
 
   const handleGetData = async () => {
+    // setUserUid(await getData('user_uid'));
     const response = await getDataMakeup();
     setData(response);
   };
 
   const getDataCart = async () => {
     const dbRef = ref(RealDatabase);
-    get(child(dbRef, 'cart/HTiO4T92NEfmV9l8uBC6SWZCZPg1/list'))
+    get(child(dbRef, `cart/${userUid}/list`))
       .then(async snapshot => {
         if (snapshot.exists()) {
           const oldData = snapshot.val();
@@ -55,11 +60,11 @@ const Cart = ({navigation}) => {
           const indx = dataCart.findIndex(it => it.id === product.id);
           if (indx >= 0) {
             return (
-              <View style={styles.container}>
+              <View style={styles.container} key={i}>
                 <Image
                   style={styles.imageThumbnail}
+                  source={{uri: product.image_link}}
                   alt={product.name}
-                  source={product.image_link}
                 />
                 <Text style={styles.selectionLabel}>{product.name}</Text>
                 <Text style={styles.price}>
@@ -71,9 +76,9 @@ const Cart = ({navigation}) => {
           }
         })}
       </View>
-      <View>
-        <Text style={styles.selectionLabel}>Total price: </Text>
-        <Text style={styles.selectionLabel}>
+      <View style={styles.containerTotal}>
+        <Text style={styles.priceLabel}>Total price: </Text>
+        <Text style={styles.priceLabel}>
           Rp.
           {data
             .map((product, i) => {
@@ -87,6 +92,7 @@ const Cart = ({navigation}) => {
             .reduce((a, b) => a + b, 0)
             .toLocaleString()}
         </Text>
+        <Gap height={10} />
       </View>
     </View>
   );
@@ -105,7 +111,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 5,
     marginRight: 5,
-
     backgroundColor: '#FFFFFF',
     padding: 10,
     borderColor: '#DFDFDF',
@@ -122,7 +127,7 @@ const styles = StyleSheet.create({
   imageThumbnail: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 150,
+    height: 50,
     backgroundColor: '#FFFFFF',
     resizeMode: 'contain',
   },
@@ -162,5 +167,13 @@ const styles = StyleSheet.create({
   textDefault: {
     fontSize: 14,
     color: '#000000',
+  },
+  containerTotal: {
+    marginHorizontal: 20,
+  },
+  priceLabel: {
+    fontSize: 14,
+    color: '#000000',
+    marginTop: 10,
   },
 });
