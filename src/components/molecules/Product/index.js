@@ -1,11 +1,12 @@
 import React from 'react';
-import {StyleSheet, Image, View, Text} from 'react-native';
+import {StyleSheet, Image, View, Text, Dimensions} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Gap, Button} from '../../atoms';
 
 const Product = ({item, isLiked, onPress, onPressCart, onPressLike}) => {
+  const widthWindow = Dimensions.get('window').width;
   return (
-    <View style={styles.container}>
+    <View style={styles.container(widthWindow)}>
       <Gap height={5} />
       <TouchableOpacity onPress={onPress}>
         <Image
@@ -32,11 +33,12 @@ const Product = ({item, isLiked, onPress, onPressCart, onPressLike}) => {
 export default Product;
 
 const styles = StyleSheet.create({
-  container: {
+  container: widthWindow => ({
     flex: 1,
     flexDirection: 'column',
     margin: 1,
     height: 270,
+    width: widthWindow / 2,
     marginBottom: 10,
     marginLeft: 5,
     marginRight: 5,
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderColor: '#DFDFDF',
     borderWidth: 1,
-  },
+  }),
   imageThumbnail: {
     justifyContent: 'center',
     alignItems: 'center',
